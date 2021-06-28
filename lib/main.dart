@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:redshop/redshop_data.dart';
 import 'package:redshop/basket.dart';
+import 'package:redshop/string.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -22,15 +23,11 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final productList = Column(
-    children: [],
-  );
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('RedShop'),
+          title: Text(storeName),
           actions: [
             IconButton(
               icon: Icon(Icons.shopping_basket),
@@ -43,12 +40,10 @@ class _MainPageState extends State<MainPage> {
         ),
         body: ListView.builder(
             itemCount: productData.keys.length,
-            itemBuilder: (context, i) {
-              for (var item in productData.entries) {
-                productList.children
-                    .add(ProductContainer(item.key, item.value[1]));
-              }
-              return productList.children[i];
+            itemBuilder: (context, index) {
+              var productDataList = productData.entries.toList();
+              return ProductContainer(
+                  productDataList[index].key, productDataList[index].value[1]);
             }));
   }
 }
@@ -79,9 +74,15 @@ class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(productName),
-        ),
+        appBar: AppBar(title: Text(productName), actions: [
+          IconButton(
+            icon: Icon(Icons.shopping_basket),
+            onPressed: () => {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => BasketPage()))
+            },
+          ),
+        ]),
         body: ListView(children: [
           Container(
               padding:
@@ -101,7 +102,7 @@ class ProductPage extends StatelessWidget {
             children: [
               Container(
                 child: Text(
-                  'Цена: ' + productData[productName]![2] + '₽',
+                  '$cost: ${productData[productName]![2]} $rubles',
                   style: TextStyle(fontSize: 25, color: Colors.redAccent),
                 ),
               ),
@@ -114,7 +115,7 @@ class ProductPage extends StatelessWidget {
                   onPressed: () {
                     basketList.add(productName);
                   },
-                  child: Text("Добавить в корзину"))
+                  child: Text(addToCart))
             ],
           )
         ]));

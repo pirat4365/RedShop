@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:redshop/redshop_data.dart';
+import 'package:redshop/string.dart';
 
 class BasketPage extends StatefulWidget {
   @override
@@ -7,7 +8,7 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
-  int? sumProduct() {
+  int sumProduct() {
     int sum = 0;
     for (var item in basketList) {
       sum += int.parse(productData[item]![2]);
@@ -15,9 +16,6 @@ class _BasketPageState extends State<BasketPage> {
     return sum;
   }
 
-  final basketItem = Column(
-    children: [],
-  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +27,19 @@ class _BasketPageState extends State<BasketPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Итого:" + sumProduct().toString() + "₽",
+                    '$total:  ${sumProduct().toString()} $rubles',
                     style: TextStyle(fontSize: 25),
                   )
                 ]),
           ),
         ),
         appBar: AppBar(
-          title: Text('Корзина'),
+          title: Text(cart),
         ),
         body: ListView.builder(
           itemCount: basketList.length,
-          itemBuilder: (context, i) {
-            for (var item in basketList) {
-              basketItem.children.add(BasketItem(item));
-            }
-            return basketItem.children[i];
+          itemBuilder: (context, index) {
+            return BasketItem(basketList[index]);
           },
         ));
   }
