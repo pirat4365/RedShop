@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:redshop/redshop_data.dart';
 import 'package:redshop/string.dart';
+import '../models/basket_model.dart';
+import '../models/flower_model.dart';
 
 class BasketPage extends StatefulWidget {
   @override
@@ -8,14 +9,6 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
-  int sumProduct() {
-    int sum = 0;
-    for (var item in basketList) {
-      sum += int.parse(productData[item]![2]);
-    }
-    return sum;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +20,7 @@ class _BasketPageState extends State<BasketPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    '$total:  ${sumProduct().toString()} $rubles',
+                    '$total:  ${BasketModel().sumProduct().toString()} $rubles',
                     style: TextStyle(fontSize: 25),
                   )
                 ]),
@@ -37,21 +30,21 @@ class _BasketPageState extends State<BasketPage> {
           title: Text(cart),
         ),
         body: ListView.builder(
-          itemCount: basketList.length,
+          itemCount: BasketModel().getLength(),
           itemBuilder: (context, index) {
-            return BasketItem(basketList[index]);
+            return BasketItem(BasketModel().getList()[index]);
           },
         ));
   }
 }
 
 class BasketItem extends StatelessWidget {
-  final String productName;
-  BasketItem(this.productName);
+  Flower flower;
+  BasketItem(this.flower);
   @override
   Widget build(BuildContext context) {
     return ListTile(
-        title: Text(productName),
-        trailing: Text(productData[productName]![2] + "₽"));
+        title: Text(flower.name),
+        trailing: Text(flower.price.toString() + "₽"));
   }
 }
