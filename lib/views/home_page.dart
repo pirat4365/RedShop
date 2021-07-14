@@ -11,7 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  late List<Flower> flowerList;
+  List<Flower> flowerList = [];
 
   @override
   void initState() {
