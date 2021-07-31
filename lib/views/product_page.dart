@@ -1,13 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:redshop/models/product_model.dart';
 import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
 
 import '../string.dart';
 import 'basket_page.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   final Flower flower;
   ProductPage(this.flower);
+  @override
+  createState() => ProductPageState(flower);
+}
+
+class ProductPageState extends State<ProductPage> {
+  Flower flower;
+  ProductPageState(this.flower);
+  int _count = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +44,39 @@ class ProductPage extends StatelessWidget {
               style: TextStyle(fontSize: 16),
             ),
           ),
-          Row(
+          Column(
             textDirection: TextDirection.ltr,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Container(
-                child: Text(
-                  '$cost: ${flower.price} $rubles',
-                  style: TextStyle(fontSize: 25, color: Colors.redAccent),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Container(
+                  child: Text(
+                    '$cost: ${flower.price * _count} $rubles',
+                    style: TextStyle(fontSize: 25, color: Colors.redAccent),
+                  ),
                 ),
-              ),
+                Row(
+                  children: [
+                    IconButton(
+                        icon: Icon(Icons.add),
+                        color: Colors.red,
+                        splashRadius: 20,
+                        iconSize: 25,
+                        onPressed: () => setState(() => _count++)),
+                    Container(
+                      child: Text(_count.toString(),
+                          style:
+                              TextStyle(fontSize: 25, color: Colors.redAccent)),
+                    ),
+                    IconButton(
+                        icon: Icon(Icons.remove),
+                        color: Colors.red,
+                        splashRadius: 20,
+                        iconSize: 25,
+                        onPressed: () => setState(() => _count--))
+                  ],
+                )
+              ]),
               ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red),
@@ -50,7 +84,8 @@ class ProductPage extends StatelessWidget {
                       textStyle:
                           MaterialStateProperty.all(TextStyle(fontSize: 16))),
                   onPressed: () {
-                    BasketModel().addProduct(flower);
+                    BasketModel().addProduct(ProductModel(flower, _count));
+                    Navigator.pop(context);
                   },
                   child: Text(addToCart))
             ],

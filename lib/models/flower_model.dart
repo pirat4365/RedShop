@@ -14,6 +14,12 @@ class Flower {
       required this.description,
       required this.imagePath,
       required this.id});
+
+  @override
+  String toString() {
+    return "name = $name; id=$id";
+  }
+
   factory Flower.fromJson(Map<String, dynamic> json) {
     return Flower(
         id: json['id'] as int,
@@ -28,10 +34,6 @@ Future<List<Flower>> loadJson() async {
   String data = await rootBundle.loadString('assets/redshop_data.json');
   final jsonsResult = jsonDecode(data) as Map<String, dynamic>;
   final flowerList = jsonsResult['flower'] as List<dynamic>;
-
-  print(flowerList
-      .map<Flower>((json) => Flower.fromJson(json as Map<String, dynamic>))
-      .toList());
   return flowerList
       .map<Flower>((json) => Flower.fromJson(json as Map<String, dynamic>))
       .toList();

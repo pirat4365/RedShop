@@ -1,4 +1,4 @@
-import 'flower_model.dart';
+import 'package:redshop/models/product_model.dart';
 
 class BasketModel {
   static final BasketModel _instance = BasketModel._internal();
@@ -6,12 +6,12 @@ class BasketModel {
     return _instance;
   }
   BasketModel._internal();
-  List<Flower> _basketList = [];
+  List<ProductModel> _basketList = [];
 
-  int sumProduct() {
+  sumProduct() {
     int sum = 0;
     for (var item in _basketList) {
-      sum += item.price;
+      sum += item.flower.price * item.count;
     }
     return sum;
   }

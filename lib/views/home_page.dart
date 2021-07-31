@@ -15,7 +15,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    loadJson().then((flowers) => flowerList = flowers);
+    loadJson().then((flowers) => setState(() => flowerList = flowers));
     super.initState();
   }
 
