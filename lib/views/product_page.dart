@@ -73,7 +73,13 @@ class ProductPageState extends State<ProductPage> {
                         color: Colors.red,
                         splashRadius: 20,
                         iconSize: 25,
-                        onPressed: () => setState(() => _count--))
+                        onPressed: () {
+                          if (_count != 1) {
+                            setState(() {
+                              _count--;
+                            });
+                          }
+                        })
                   ],
                 )
               ]),

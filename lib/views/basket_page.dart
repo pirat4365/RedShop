@@ -35,13 +35,19 @@ class _BasketPageState extends State<BasketPage> {
           separatorBuilder: (BuildContext context, int index) => Divider(),
           itemBuilder: (context, index) {
             return Dismissible(
-                key: UniqueKey(),
-                onDismissed: (direction) {
-                  setState(() {
-                    BasketModel().getList().removeAt(index);
-                  });
+              key: UniqueKey(),
+              onDismissed: (direction) {
+                setState(() {
+                  BasketModel().getList().removeAt(index);
+                });
+              },
+              child: BasketItem(
+                BasketModel().getList()[index],
+                () {
+                  setState(() {});
                 },
-                child: BasketItem(BasketModel().getList()[index]));
+              ),
+            );
           },
         ));
   }
@@ -49,22 +55,21 @@ class _BasketPageState extends State<BasketPage> {
 
 class BasketItem extends StatefulWidget {
   ProductModel product;
-  BasketItem(this.product);
+  BasketItem(this.product, this.totalCallback);
+  VoidCallback totalCallback;
+
   @override
-  createState() => BasketItemState(product);
+  createState() => BasketItemState();
 }
 
 class BasketItemState extends State<BasketItem> {
-  ProductModel product;
-  BasketItemState(this.product);
-
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Container(
-          child: Text(product.flower.name.toString(),
+          child: Text(widget.product.flower.name.toString(),
               style: TextStyle(fontSize: 20, color: Colors.white)),
         ),
         Row(
@@ -76,11 +81,12 @@ class BasketItemState extends State<BasketItem> {
                 iconSize: 25,
                 onPressed: () {
                   setState(() {
-                    product.count++;
+                    widget.product.count++;
                   });
+                  widget.totalCallback();
                 }),
             Container(
-              child: Text(product.count.toString(),
+              child: Text(widget.product.count.toString(),
                   style: TextStyle(fontSize: 18, color: Colors.redAccent)),
             ),
             IconButton(
@@ -90,13 +96,17 @@ class BasketItemState extends State<BasketItem> {
                 iconSize: 25,
                 onPressed: () {
                   setState(() {
-                    product.count--;
+                    if (widget.product.count != 1) {
+                      widget.product.count--;
+                    }
+                    widget.totalCallback();
                   });
                 })
           ],
         ),
         Container(
-          child: Text("${product.count * product.flower.price}$rubles"),
+          child: Text(
+              "${widget.product.count * widget.product.flower.price}$rubles"),
         )
       ],
     );

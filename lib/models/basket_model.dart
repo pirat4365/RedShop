@@ -16,8 +16,14 @@ class BasketModel {
     return sum;
   }
 
-  void addProduct(product) {
-    _basketList.add(product);
+  void addProduct(ProductModel product) {
+    _basketList.forEach((item) {
+      if (item.flower.id == product.flower.id) {
+        item.count += product.count;
+      } else if (item.flower.id != product.flower.id) {
+        _basketList.add(product);
+      }
+    });
   }
 
   getList() {
