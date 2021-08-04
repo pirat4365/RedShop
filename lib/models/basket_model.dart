@@ -16,7 +16,7 @@ class BasketModel {
     return sum;
   }
 
-  addProduct(ProductModel product) {
+  void addProduct(ProductModel product) {
     bool isContain = false;
     for (var item in _basketList) {
       if (item.isObjectEqual(product)) {
@@ -24,9 +24,9 @@ class BasketModel {
         isContain = true;
         break;
       }
-      if (!isContain) {
-        return _basketList.add(product);
-      }
+    }
+    if (!isContain) {
+      _basketList.add(product);
     }
   }
 
