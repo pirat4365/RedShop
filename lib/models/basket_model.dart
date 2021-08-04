@@ -17,13 +17,17 @@ class BasketModel {
   }
 
   void addProduct(ProductModel product) {
-    _basketList.forEach((item) {
-      if (item.flower.id == product.flower.id) {
+    bool isContain = false;
+    for (var item in _basketList) {
+      if (item.isObjectEqual(product)) {
         item.count += product.count;
-      } else if (item.flower.id != product.flower.id) {
-        _basketList.add(product);
+        isContain = true;
+        break;
       }
-    });
+    }
+    if (!isContain) {
+      _basketList.add(product);
+    }
   }
 
   getList() {

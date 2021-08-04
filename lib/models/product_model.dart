@@ -5,8 +5,7 @@ class ProductModel {
   int count;
   ProductModel(this.flower, this.count);
 
-  @override
-  String toString() {
-    return "name = $flower.name; count: $count";
+  bool isObjectEqual(ProductModel productModel) {
+    return this.flower.id == productModel.flower.id;
   }
 }
