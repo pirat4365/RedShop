@@ -4,8 +4,8 @@ import 'package:redshop/views/product_page.dart';
 
 class ProductContainer extends StatelessWidget {
   final Flower flower;
-
-  ProductContainer(this.flower);
+  VoidCallback homeTotal;
+  ProductContainer(this.flower, this.homeTotal);
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +13,10 @@ class ProductContainer extends StatelessWidget {
         leading: CircleAvatar(backgroundImage: AssetImage(flower.imagePath)),
         title: Text(flower.name),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductPage(flower)));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductPage(flower, homeTotal)));
         });
   }
 }

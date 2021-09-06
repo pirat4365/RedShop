@@ -1,6 +1,10 @@
 const storeName = "RedShop";
 const cost = "Цена";
 const rubles = "₽";
-const addToCart = "Добавить в корзину";
+const addToCart = "Добавить  ";
 const total = "Итого";
 const cart = "Корзина";
+const buy = "Купить";
+const basketEmpty = 'В корзине пусто';
+const ok = 'Ок';
+const buyOk = 'Покупка прошла успешно';
