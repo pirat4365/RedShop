@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
+import 'package:redshop/views/appBar.dart';
 import 'package:redshop/views/product_container.dart';
 
 import '../string.dart';
-import 'basket_page.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -22,29 +21,11 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(storeName),
-          actions: [
-            Row(
-              children: [
-                Text(
-                  "${BasketModel().sumProduct().toString()} $rubles",
-                  style: TextStyle(fontSize: 15),
-                ),
-                IconButton(
-                  icon: Icon(Icons.shopping_basket),
-                  onPressed: () => {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => BasketPage(() {
-                                  setState(() {});
-                                })))
-                  },
-                ),
-              ],
-            )
-          ],
+        appBar: CustomAppBar(
+          title: storeName,
+          isAction: true,
+          isLeading: false,
+          callBack: false,
         ),
         body: ListView(
             children: flowerList.map((flower) {

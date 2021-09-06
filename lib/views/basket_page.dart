@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redshop/models/product_model.dart';
 import 'package:redshop/string.dart';
+import 'package:redshop/views/appBar.dart';
+import 'package:redshop/views/home_page.dart';
 import '../models/basket_model.dart';
 
 class BasketPage extends StatefulWidget {
@@ -25,8 +27,10 @@ class BasketPage extends StatefulWidget {
               onPressed: () {
                 BasketModel().getList().clear();
                 homeTotal();
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainPage()),
+                    (route) => false);
               },
             ),
           ],
@@ -53,7 +57,7 @@ class _BasketPageState extends State<BasketPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        '$total:  ${BasketModel().sumProduct().toString()} $rubles',
+                        '$total:  ${BasketModel().sumProduct().toString()} ₽',
                         style: TextStyle(fontSize: 25),
                       ),
                       ElevatedButton(
@@ -75,15 +79,11 @@ class _BasketPageState extends State<BasketPage> {
                     ]),
               ),
             ),
-            appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  widget.homeTotal();
-                },
-              ),
-              title: Text(cart),
+            appBar: CustomAppBar(
+              title: cart,
+              isAction: false,
+              isLeading: true,
+              callBack: widget.homeTotal,
             ),
             body: (() {
               if (BasketModel().getList().isEmpty) {
@@ -126,8 +126,6 @@ class _BasketPageState extends State<BasketPage> {
               }
             }())));
   }
-
-  void showAlertWindow(BuildContext context) {}
 }
 
 class BasketItem extends StatefulWidget {
@@ -182,8 +180,7 @@ class BasketItemState extends State<BasketItem> {
           ],
         ),
         Container(
-          child: Text(
-              "${widget.product.count * widget.product.flower.price}$rubles"),
+          child: Text("${widget.product.count * widget.product.flower.price}₽"),
         )
       ],
     );

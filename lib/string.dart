@@ -1,6 +1,5 @@
 const storeName = "RedShop";
 const cost = "Цена";
-const rubles = "₽";
 const addToCart = "Добавить  ";
 const total = "Итого";
 const cart = "Корзина";

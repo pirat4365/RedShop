@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:redshop/models/product_model.dart';
 import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
+import 'package:redshop/views/appBar.dart';
 
 import '../string.dart';
 import 'basket_page.dart';
@@ -25,36 +26,12 @@ class ProductPageState extends State<ProductPage> {
     return WillPopScope(
         onWillPop: () async => true,
         child: Scaffold(
-          appBar: AppBar(
-              title: Text(flower.name),
-              actions: [
-                Row(
-                  children: [
-                    Text(
-                      "${BasketModel().sumProduct().toString()} $rubles",
-                      style: TextStyle(fontSize: 15),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.shopping_basket),
-                      onPressed: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BasketPage(() {
-                                      setState(() {});
-                                    })))
-                      },
-                    ),
-                  ],
-                )
-              ],
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  widget.homeTotal();
-                },
-              )),
+          appBar: (CustomAppBar(
+            title: flower.name,
+            isAction: true,
+            isLeading: true,
+            callBack: widget.homeTotal,
+          )),
           body: ListView(children: [
             Container(
                 padding:
@@ -71,7 +48,7 @@ class ProductPageState extends State<ProductPage> {
             Container(
               padding: EdgeInsets.only(left: 20, bottom: 30),
               child: Text(
-                '$cost: ${flower.price} $rubles',
+                '$cost: ${flower.price} ₽',
                 style: TextStyle(fontSize: 25, color: Colors.redAccent),
               ),
             )
@@ -117,7 +94,7 @@ class ProductPageState extends State<ProductPage> {
                       Navigator.pop(context);
                       widget.homeTotal();
                     },
-                    child: Text('$addToCart  ${flower.price * _count} $rubles'))
+                    child: Text('$addToCart  ${flower.price * _count} ₽'))
               ],
             ),
           )),
