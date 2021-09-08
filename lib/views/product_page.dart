@@ -27,8 +27,8 @@ class ProductPageState extends State<ProductPage> {
         child: Scaffold(
           appBar: (CustomAppBar(
             title: flower.name,
-            isAction: true,
-            isLeading: true,
+            isShowBasket: true,
+            isShowBackArrow: true,
             callBack: widget.homeTotal,
           )),
           body: ListView(children: [
