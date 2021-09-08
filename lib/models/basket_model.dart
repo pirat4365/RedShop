@@ -17,15 +17,10 @@ class BasketModel {
   }
 
   void addProduct(ProductModel product) {
-    bool isContain = false;
-    for (var item in _basketList) {
-      if (item.isObjectEqual(product)) {
-        item.count += product.count;
-        isContain = true;
-        break;
-      }
-    }
-    if (!isContain) {
+    int index = _basketList.indexWhere((item) => item.isObjectEqual(product));
+    if (index != -1) {
+      _basketList[index].count += product.count;
+    } else {
       _basketList.add(product);
     }
   }

@@ -6,7 +6,6 @@ import 'package:redshop/models/flower_model.dart';
 import 'package:redshop/views/appBar.dart';
 
 import '../string.dart';
-import 'basket_page.dart';
 
 class ProductPage extends StatefulWidget {
   final Flower flower;
