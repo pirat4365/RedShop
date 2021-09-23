@@ -1,4 +1,5 @@
 import 'package:redshop/models/product_model.dart';
+import 'package:redshop/services/database_manager.dart';
 import 'package:redshop/services/flower_db.dart';
 
 class BasketModel {
@@ -21,8 +22,11 @@ class BasketModel {
     int index = _basketList.indexWhere((item) => item.isObjectEqual(product));
     if (index != -1) {
       _basketList[index].count += product.count;
+      DatabaseManager.instance.updateFlowers(product.count);
     } else {
       _basketList.add(product);
+      DatabaseManager.instance
+          .addFlowers(DBFlower(product.count, product.flower.id));
     }
   }
 

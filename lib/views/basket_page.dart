@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redshop/models/product_model.dart';
+import 'package:redshop/services/database_manager.dart';
+import 'package:redshop/services/flower_db.dart';
 import 'package:redshop/string.dart';
 import 'package:redshop/views/appBar.dart';
 import 'package:redshop/views/home_page.dart';
@@ -44,6 +46,16 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
+  List<DBFlower> DBList = [];
+
+  @override
+  void initState() {
+    DatabaseManager.instance
+        .fetchAllFlowers()
+        .then((dbflower) => setState(() => DBList = dbflower!));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -112,6 +124,7 @@ class _BasketPageState extends State<BasketPage> {
                       onDismissed: (direction) {
                         setState(() {
                           BasketModel().getList().removeAt(index);
+                          DatabaseManager.instance.deleteFlowers(index);
                         });
                       },
                       child: BasketItem(
@@ -132,7 +145,6 @@ class BasketItem extends StatefulWidget {
   ProductModel product;
   BasketItem(this.product, this.totalCallback);
   VoidCallback totalCallback;
-
   @override
   createState() => BasketItemState();
 }
