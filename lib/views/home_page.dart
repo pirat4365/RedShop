@@ -23,8 +23,8 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
         appBar: CustomAppBar(
           title: storeName,
-          isAction: true,
-          isLeading: false,
+          isShowBasket: true,
+          isShowBackArrow: false,
           callBack: false,
         ),
         body: ListView(

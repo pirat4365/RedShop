@@ -81,8 +81,8 @@ class _BasketPageState extends State<BasketPage> {
             ),
             appBar: CustomAppBar(
               title: cart,
-              isAction: false,
-              isLeading: true,
+              isShowBasket: false,
+              isShowBackArrow: true,
               callBack: widget.homeTotal,
             ),
             body: (() {

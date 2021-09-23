@@ -5,12 +5,13 @@ import 'basket_page.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
-  bool isAction;
-  bool isLeading;
+  bool isShowBasket;
+  bool isShowBackArrow;
   dynamic callBack;
-  CustomAppBar({required this.title, isAction, callBack, isLeading, Key? key})
-      : isAction = isAction,
-        isLeading = isLeading,
+  CustomAppBar(
+      {required this.title, isShowBasket, callBack, isShowBackArrow, Key? key})
+      : isShowBasket = isShowBasket,
+        isShowBackArrow = isShowBackArrow,
         callBack = callBack,
         preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
@@ -29,7 +30,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return AppBar(
       title: Text(widget.title),
       actions: (() {
-        if (widget.isAction) {
+        if (widget.isShowBasket) {
           return [
             Row(
               children: [
@@ -54,7 +55,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         }
       }()),
       leading: () {
-        if (widget.isLeading) {
+        if (widget.isShowBackArrow) {
           return IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {

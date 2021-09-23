@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:redshop/models/product_model.dart';
 import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
+import 'package:redshop/services/database_manager.dart';
+import 'package:redshop/services/flower_db.dart';
 import 'package:redshop/views/appBar.dart';
 
 import '../string.dart';
@@ -11,6 +13,7 @@ class ProductPage extends StatefulWidget {
   final Flower flower;
   ProductPage(this.flower, this.homeTotal);
   VoidCallback homeTotal;
+  final dbHelp = DatabaseManager.instance;
 
   @override
   createState() => ProductPageState(flower);
@@ -92,6 +95,7 @@ class ProductPageState extends State<ProductPage> {
                       BasketModel().addProduct(ProductModel(flower, _count));
                       Navigator.pop(context);
                       widget.homeTotal();
+                      widget.dbHelp.addFlowers(DBFlower(_count, flower.id));
                     },
                     child: Text('$addToCart  ${flower.price * _count} ₽'))
               ],
