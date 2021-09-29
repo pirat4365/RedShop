@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:redshop/models/flower_model.dart';
 import 'package:redshop/models/product_model.dart';
 import 'package:redshop/services/database_manager.dart';
@@ -14,7 +13,7 @@ class BasketModel {
   BasketModel._internal();
   List<ProductModel> _basketList = [];
 
-  sumProduct() {
+  int sumProduct() {
     int sum = 0;
     for (var item in _basketList) {
       sum += item.flower.price * item.count;
@@ -27,12 +26,10 @@ class BasketModel {
     if (index != -1) {
       int res = _basketList[index].count += product.count;
       DatabaseManager.instance.updateFlowers(DBFlower(res, product.flower.id));
-      DatabaseManager.instance.showFlowers();
     } else {
       _basketList.add(product);
       DatabaseManager.instance
           .addFlowers(DBFlower(product.count, product.flower.id));
-      DatabaseManager.instance.showFlowers();
     }
   }
 
@@ -44,19 +41,23 @@ class BasketModel {
     return _basketList.length;
   }
 
-  initBasket() {
-    List dbFlower = [];
-    print('111');
-    DatabaseManager.instance.fetchAllFlowers().then((value) {
-      dbFlower = value;
+  void addDBList(ProductModel product) {
+    _basketList.add(product);
+  }
+
+  Future initBasket() async {
+    List dbFlowers = [];
+    await DatabaseManager.instance.fetchAllFlowers().then((value) {
+      dbFlowers = value;
     });
-    loadJson().then((value) => value.map((flower) {
-          for (var item in dbFlower) {
-            if (item.id == flower.id) {
-              return BasketModel().addProduct(ProductModel(flower, item.count));
-            }
+    await loadJson().then((flowers) {
+      for (var flower in flowers) {
+        for (var dbFlower in dbFlowers) {
+          if (flower.id == dbFlower.id) {
+            BasketModel().addDBList(ProductModel(flower, dbFlower.count));
           }
-        }));
-    print(dbFlower);
+        }
+      }
+    });
   }
 }

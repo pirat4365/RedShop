@@ -48,7 +48,6 @@ class DatabaseManager {
 
   Future<int> updateFlowers(DBFlower newdbFlower) async {
     Database database = _database ??= await _initDatabase();
-    showFlowers();
     return database.update(
       'basket',
       newdbFlower.toDbMap(),
@@ -60,14 +59,6 @@ class DatabaseManager {
   Future<int> deleteFlowers(int id) async {
     Database database = _database ??= await _initDatabase();
     return database.delete('basket', where: 'id = ?', whereArgs: [id]);
-  }
-
-  Future showFlowers() async {
-    Database database = _database ??= await _initDatabase();
-    List<Map<String, dynamic>> maps = await database.query('basket');
-    for (var item in maps) {
-      print(item);
-    }
   }
 
   Future deleteAllFlowers() async {

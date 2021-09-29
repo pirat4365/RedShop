@@ -117,7 +117,6 @@ class _BasketPageState extends State<BasketPage> {
                           DatabaseManager.instance.deleteFlowers(
                               BasketModel().getList()[index].flower.id);
                           BasketModel().getList().removeAt(index);
-                          DatabaseManager.instance.showFlowers();
                         });
                       },
                       child: BasketItem(

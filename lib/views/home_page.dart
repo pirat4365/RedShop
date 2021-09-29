@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
-import 'package:redshop/models/product_model.dart';
-import 'package:redshop/services/database_manager.dart';
-import 'package:redshop/services/flower_db.dart';
 import 'package:redshop/views/appBar.dart';
 import 'package:redshop/views/product_container.dart';
 
@@ -15,15 +12,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<DBFlower> dbFlowers = [];
   List<Flower> flowerList = [];
 
   @override
   void initState() {
-    loadJson().then((flowers) => setState(() {
-          flowerList = flowers;
-        }));
-    BasketModel().initBasket();
+    loadJson().then((flower) => setState(() => flowerList = flower));
+    BasketModel().initBasket().then((_) => setState(() {}));
     super.initState();
   }
 
