@@ -28,6 +28,7 @@ class BasketPage extends StatefulWidget {
               child: Text(ok),
               onPressed: () {
                 BasketModel().getList().clear();
+                DatabaseManager.instance.deleteAllFlowers();
                 homeTotal();
                 Navigator.pushAndRemoveUntil(
                     context,
@@ -46,16 +47,6 @@ class BasketPage extends StatefulWidget {
 }
 
 class _BasketPageState extends State<BasketPage> {
-  List<DBFlower> DBList = [];
-
-  @override
-  void initState() {
-    DatabaseManager.instance
-        .fetchAllFlowers()
-        .then((dbflower) => setState(() => DBList = dbflower!));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -123,8 +114,10 @@ class _BasketPageState extends State<BasketPage> {
                       key: UniqueKey(),
                       onDismissed: (direction) {
                         setState(() {
+                          DatabaseManager.instance.deleteFlowers(
+                              BasketModel().getList()[index].flower.id);
                           BasketModel().getList().removeAt(index);
-                          DatabaseManager.instance.deleteFlowers(index);
+                          DatabaseManager.instance.showFlowers();
                         });
                       },
                       child: BasketItem(
@@ -170,6 +163,8 @@ class BasketItemState extends State<BasketItem> {
                   setState(() {
                     if (widget.product.count != 1) {
                       widget.product.count--;
+                      DatabaseManager.instance.updateFlowers(DBFlower(
+                          widget.product.count, widget.product.flower.id));
                     }
                     widget.totalCallback();
                   });
@@ -186,6 +181,8 @@ class BasketItemState extends State<BasketItem> {
                 onPressed: () {
                   setState(() {
                     widget.product.count++;
+                    DatabaseManager.instance.updateFlowers(DBFlower(
+                        widget.product.count, widget.product.flower.id));
                   });
                   widget.totalCallback();
                 })

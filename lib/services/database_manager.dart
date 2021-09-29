@@ -33,31 +33,45 @@ class DatabaseManager {
           """);
   }
 
-  Future<List<DBFlower>?> fetchAllFlowers() async {
-    Database database = _database!;
+  Future<List<DBFlower>> fetchAllFlowers() async {
+    Database database = _database ??= await _initDatabase();
     List<Map<String, dynamic>> maps = await database.query('basket');
-    if (maps.isNotEmpty) {
-      return maps.map((map) => DBFlower.fromDbMap(map)).toList();
-    }
-    return null;
+
+    return maps.map((map) => DBFlower.fromDbMap(map)).toList();
   }
 
   Future<int> addFlowers(DBFlower dbFlower) async {
-    Database database = _database!;
+    Database database = _database ??= await _initDatabase();
     return database.insert('basket', dbFlower.toDbMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<int> updateFlowers(newdbFlower) async {
-    Database database = _database!;
-    return database.update('basket', newdbFlower.toDbMap(),
-        where: 'id = ?',
-        whereArgs: [newdbFlower.count],
-        conflictAlgorithm: ConflictAlgorithm.replace);
+  Future<int> updateFlowers(DBFlower newdbFlower) async {
+    Database database = _database ??= await _initDatabase();
+    showFlowers();
+    return database.update(
+      'basket',
+      newdbFlower.toDbMap(),
+      where: 'id = ?',
+      whereArgs: [newdbFlower.id],
+    );
   }
 
   Future<int> deleteFlowers(int id) async {
-    Database database = _database!;
+    Database database = _database ??= await _initDatabase();
     return database.delete('basket', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future showFlowers() async {
+    Database database = _database ??= await _initDatabase();
+    List<Map<String, dynamic>> maps = await database.query('basket');
+    for (var item in maps) {
+      print(item);
+    }
+  }
+
+  Future deleteAllFlowers() async {
+    Database database = _database ??= await _initDatabase();
+    return database.delete('basket');
   }
 }
