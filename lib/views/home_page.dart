@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:redshop/models/basket_model.dart';
 import 'package:redshop/models/flower_model.dart';
+import 'package:redshop/services/database_manager.dart';
 import 'package:redshop/views/appBar.dart';
 import 'package:redshop/views/product_container.dart';
 
@@ -16,8 +17,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void initState() {
-    loadJson().then((flower) => setState(() => flowerList = flower));
-    BasketModel().initBasket().then((_) => setState(() {}));
+    DatabaseManager.instance.initDatabase().then((_) async => await BasketModel
+        .instance
+        .initBasket()
+        .then((flowers) => setState(() => flowerList = flowers)));
     super.initState();
   }
 

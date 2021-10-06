@@ -91,7 +91,8 @@ class ProductPageState extends State<ProductPage> {
                         textStyle:
                             MaterialStateProperty.all(TextStyle(fontSize: 16))),
                     onPressed: () {
-                      BasketModel().addProduct(ProductModel(flower, _count));
+                      BasketModel.instance
+                          .addProduct(ProductModel(flower, _count));
                       Navigator.pop(context);
                       widget.homeTotal();
                     },

@@ -6,11 +6,8 @@ import 'package:redshop/services/database_manager.dart';
 import 'package:redshop/services/flower_db.dart';
 
 class BasketModel {
-  static final BasketModel _instance = BasketModel._internal();
-  factory BasketModel() {
-    return _instance;
-  }
-  BasketModel._internal();
+  BasketModel._privateConstructor();
+  static final BasketModel instance = BasketModel._privateConstructor();
   List<ProductModel> _basketList = [];
 
   int sumProduct() {
@@ -45,19 +42,18 @@ class BasketModel {
     _basketList.add(product);
   }
 
-  Future initBasket() async {
-    List dbFlowers = [];
-    await DatabaseManager.instance.fetchAllFlowers().then((value) {
-      dbFlowers = value;
-    });
-    await loadJson().then((flowers) {
+  Future<List<Flower>> initBasket() async {
+    List dbFlowers = await DatabaseManager.instance.fetchAllFlowers();
+    return loadJson().then((flowers) {
       for (var flower in flowers) {
         for (var dbFlower in dbFlowers) {
           if (flower.id == dbFlower.id) {
-            BasketModel().addDBList(ProductModel(flower, dbFlower.count));
+            BasketModel.instance
+                .addDBList(ProductModel(flower, dbFlower.count));
           }
         }
       }
+      return flowers;
     });
   }
 }

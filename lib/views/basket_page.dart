@@ -27,7 +27,7 @@ class BasketPage extends StatefulWidget {
                       MaterialStateProperty.all(TextStyle(fontSize: 17))),
               child: Text(ok),
               onPressed: () {
-                BasketModel().getList().clear();
+                BasketModel.instance.getList().clear();
                 DatabaseManager.instance.deleteAllFlowers();
                 homeTotal();
                 Navigator.pushAndRemoveUntil(
@@ -60,7 +60,7 @@ class _BasketPageState extends State<BasketPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        '$total:  ${BasketModel().sumProduct().toString()} ₽',
+                        '$total:  ${BasketModel.instance.sumProduct().toString()} ₽',
                         style: TextStyle(fontSize: 25),
                       ),
                       ElevatedButton(
@@ -72,7 +72,7 @@ class _BasketPageState extends State<BasketPage> {
                               textStyle: MaterialStateProperty.all(
                                   TextStyle(fontSize: 17))),
                           onPressed: () {
-                            if (BasketModel().getList().isNotEmpty) {
+                            if (BasketModel.instance.getList().isNotEmpty) {
                               widget.alertWindow(context);
                             }
                           },
@@ -89,7 +89,7 @@ class _BasketPageState extends State<BasketPage> {
               callBack: widget.homeTotal,
             ),
             body: (() {
-              if (BasketModel().getList().isEmpty) {
+              if (BasketModel.instance.getList().isEmpty) {
                 return Padding(
                   padding: EdgeInsets.only(top: 100, left: 30),
                   child: Column(
@@ -106,7 +106,7 @@ class _BasketPageState extends State<BasketPage> {
               } else {
                 return ListView.separated(
                   padding: EdgeInsets.all(10),
-                  itemCount: BasketModel().getLength(),
+                  itemCount: BasketModel.instance.getLength(),
                   separatorBuilder: (BuildContext context, int index) =>
                       Divider(),
                   itemBuilder: (context, index) {
@@ -115,12 +115,12 @@ class _BasketPageState extends State<BasketPage> {
                       onDismissed: (direction) {
                         setState(() {
                           DatabaseManager.instance.deleteFlowers(
-                              BasketModel().getList()[index].flower.id);
-                          BasketModel().getList().removeAt(index);
+                              BasketModel.instance.getList()[index].flower.id);
+                          BasketModel.instance.getList().removeAt(index);
                         });
                       },
                       child: BasketItem(
-                        BasketModel().getList()[index],
+                        BasketModel.instance.getList()[index],
                         () {
                           setState(() {});
                         },

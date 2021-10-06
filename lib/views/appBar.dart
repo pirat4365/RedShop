@@ -35,7 +35,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
             Row(
               children: [
                 Text(
-                  "${BasketModel().sumProduct().toString()} ₽",
+                  "${BasketModel.instance.sumProduct().toString()} ₽",
                   style: TextStyle(fontSize: 15),
                 ),
                 IconButton(
